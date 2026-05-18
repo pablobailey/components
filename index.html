@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B2B Quick Links</title>
+  <style>
+    :root {
+      --navy: #182958;
+      --blue: #008FD5;
+      --magenta: #960F44;
+      --orange: #EF4123;
+      --yellow: #FFB11C;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #647083;
+      --line: #dce4ef;
+      --shadow: 0 16px 40px rgba(24, 41, 88, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Fira Sans", "Segoe UI", Arial, sans-serif;
+      background: transparent;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .quick-links-section {
+      width: 100%;
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 24px 60px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .quick-links-header { margin-bottom: 18px; }
+
+    .quick-links-header h2 {
+      margin: 0 0 6px;
+      color: var(--navy);
+      font-size: 25px;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+
+    .quick-links-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .carousel-window {
+      overflow: hidden;
+      padding: 10px 0 18px;
+    }
+
+    .quick-links-track {
+      display: flex;
+      gap: 16px;
+      transition: transform .35s ease;
+      will-change: transform;
+    }
+
+    .quick-card {
+      flex: 0 0 calc((100% - 32px) / 3);
+      min-height: 214px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      padding: 18px;
+      text-decoration: none;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .quick-card::after {
+      content: "";
+      position: absolute;
+      width: 132px;
+      height: 132px;
+      right: -56px;
+      top: -56px;
+      border-radius: 50%;
+      background: var(--accent, rgba(0,143,213,.14));
+    }
+
+    .quick-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--blue);
+      box-shadow: 0 16px 32px rgba(0,143,213,.16);
+    }
+
+    .quick-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 22px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-card h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-size: 18px;
+      line-height: 1.25;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.42;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-card small {
+      display: inline-block;
+      margin-top: 14px;
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 55%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 72px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--navy);
+      border-radius: 18px;
+      font-size: 26px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(24,41,88,.11);
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+      z-index: 5;
+    }
+
+    .carousel-btn:hover {
+      transform: translateY(-50%) scale(1.04);
+      box-shadow: 0 12px 24px rgba(24,41,88,.16);
+    }
+
+    .carousel-btn:disabled {
+      opacity: .35;
+      cursor: default;
+      transform: translateY(-50%);
+    }
+
+    .carousel-btn.prev { left: 14px; }
+    .carousel-btn.next { right: 14px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 2px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 0;
+      background: #cfd9e8;
+      cursor: pointer;
+      transition: width .18s ease, background .18s ease;
+    }
+
+    .dot.active {
+      width: 24px;
+      background: var(--blue);
+    }
+
+    @media (max-width: 900px) {
+      .quick-card { flex-basis: calc((100% - 16px) / 2); }
+    }
+
+    @media (max-width: 620px) {
+      body { overflow: auto; }
+
+      .quick-links-section {
+        border-radius: 22px;
+        padding: 20px 48px;
+      }
+
+      .quick-links-header h2 { font-size: 22px; }
+      .quick-links-header p { font-size: 14px; }
+
+      .quick-card {
+        flex-basis: 100%;
+        min-height: 218px;
+      }
+
+      .carousel-btn {
+        width: 36px;
+        height: 62px;
+        font-size: 22px;
+      }
+
+      .carousel-btn.prev { left: 8px; }
+      .carousel-btn.next { right: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="quick-links-section" aria-label="B2B Quick Links">
+    <button class="carousel-btn prev" type="button" onclick="moveCarousel(-1)" aria-label="Previous quick link">‹</button>
+    <button class="carousel-btn next" type="button" onclick="moveCarousel(1)" aria-label="Next quick link">›</button>
+
+    <div class="quick-links-header">
+      <!-- EDIT HERE: Main section title -->
+      <h2>B2B Quick Links</h2>
+
+      <!-- EDIT HERE: Main section description -->
+      <p>Fast access to the most useful B2B resources, references, and working spaces.</p>
+    </div>
+
+    <div class="carousel-window">
+      <div id="quickLinksTrack" class="quick-links-track">
+
+        <!-- BOX 1
+          EDIT HERE:
+          href="https://www.google.com" -> Replace with your real SharePoint / Power BI / Form URL
+          Change icon, title, description, and CTA text below.
+        -->
+        <a class="quick-card" style="--accent: rgba(0,143,213,.16);" href="https://www.google.com" target="_blank" rel="noopener">
+          <div class="quick-icon">🎯</div>
+          <h3>B2B Strategy Hub</h3>
+          <p>Access the main space for B2B priorities, annual focus areas, and working references.</p>
+          <small>Open hub →</small>
+        </a>
+
+        <!-- BOX 2: Edit URL, icon, title, description, and CTA -->
+        <a class="quick-card" style="--accent: rgba(255,177,28,.24);" href="https://www.google.com" target="_blank" rel="noopener">
+          <div class="quick-icon">🌎</div>
+          <h3>Market Profiles</h3>
+          <p>Access country-level context, club presence, and opportunity notes by market.</p>
+          <small>View profiles →</small>
+        </a>
+
+        <!-- BOX 3: Edit URL, icon, title, description, and CTA -->
+        <a class="quick-card" style="--accent: rgba(150,15,68,.13);" href="https://www.google.com" target="_blank" rel="noopener">
+          <div class="quick-icon">🤝</div>
+          <h3>Partner Resources</h3>
+          <p>Find templates, references, and materials used for B2B relationship support.</p>
+          <small>Open resources →</small>
+        </a>
+
+        <!-- BOX 4: Edit URL, icon, title, description, and CTA -->
+        <a class="quick-card" style="--accent: rgba(239,65,35,.14);" href="https://www.google.com" target="_blank" rel="noopener">
+          <div class="quick-icon">🧭</div>
+          <h3>How to Work With B2B</h3>
+          <p>Understand when to contact the team, what to prepare, and where to start.</p>
+          <small>See guide →</small>
+        </a>
+
+        <!-- BOX 5: Edit URL, icon, title, description, and CTA -->
+        <a class="quick-card" style="--accent: rgba(0,143,213,.13);" href="https://www.google.com" target="_blank" rel="noopener">
+          <div class="quick-icon">📁</div>
+          <h3>Shared Documents</h3>
+          <p>Open the main document library for presentations, PDFs, and support files.</p>
+          <small>Open library →</small>
+        </a>
+
+      </div>
+    </div>
+
+    <div id="carouselDots" class="carousel-dots" aria-label="Carousel pagination"></div>
+  </section>
+
+  <script>
+    const track = document.getElementById("quickLinksTrack");
+    const cards = Array.from(track.children);
+    const dotsContainer = document.getElementById("carouselDots");
+    const prevBtn = document.querySelector(".carousel-btn.prev");
+    const nextBtn = document.querySelector(".carousel-btn.next");
+
+    let currentIndex = 0;
+
+    function getVisibleCards() {
+      if (window.innerWidth <= 620) return 1;
+      if (window.innerWidth <= 900) return 2;
+      return 3;
+    }
+
+    function getMaxIndex() {
+      return Math.max(0, cards.length - getVisibleCards());
+    }
+
+    function updateCarousel() {
+      const cardWidth = cards[0].getBoundingClientRect().width;
+      const gap = 16;
+      const offset = currentIndex * (cardWidth + gap);
+
+      track.style.transform = `translateX(-${offset}px)`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === getMaxIndex();
+
+      renderDots();
+    }
+
+    function moveCarousel(direction) {
+      currentIndex = Math.min(Math.max(currentIndex + direction, 0), getMaxIndex());
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      currentIndex = Math.min(Math.max(index, 0), getMaxIndex());
+      updateCarousel();
+    }
+
+    function renderDots() {
+      const max = getMaxIndex();
+      dotsContainer.innerHTML = "";
+
+      for (let i = 0; i <= max; i++) {
+        const dot = document.createElement("button");
+        dot.className = `dot ${i === currentIndex ? "active" : ""}`;
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Go to carousel position ${i + 1}`);
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    window.addEventListener("resize", () => {
+      currentIndex = Math.min(currentIndex, getMaxIndex());
+      updateCarousel();
+    });
+
+    updateCarousel();
+  </script>
+</body>
+</html>
